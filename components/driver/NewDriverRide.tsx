@@ -26,35 +26,62 @@ export function NewDriverRide() {
 
     return (
         <ScrollView contentContainerStyle={styles.container}  keyboardShouldPersistTaps='handled'>
-            <View>
-                <Text style={styles.label}>Time of arrival</Text>
+            <View style={{width: '100%'}}>
+                <Text style={styles.label}>Date and time of departure</Text>
                 {Platform.OS != 'android' ? 
-                    (<DateTimePicker 
+                    (   
+                        <DateTimePicker 
                         value={timeOfArrival ?? new Date()} 
-                        mode="time" 
+                        mode="datetime" 
                         onChange={(event, date) => setTimeOfArrival(date)}
-                        />) :
+                        style={{marginStart: 0}}
+                        />
+                    
+                    ) :
                     (
-                        <Button onPress={() => showDatePicker('time', timeOfArrival ?? new Date(), (event, date) => setTimeOfArrival(date))} 
-                        title="Open timepicker" />
-                        )}
+                        <View>
+                            <TouchableOpacity 
+                            style={styles.btn}
+                            onPress={() => showDatePicker('date', timeOfArrival ?? new Date(), (event, date) => setConfirmationTimeLimit(date))} >
+                                <Text style={styles.btnText}>
+                                Select date
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                            style={styles.btn}
+                            onPress={() => showDatePicker('time', timeOfArrival ?? new Date(), (event, date) => setTimeOfArrival(date))} >
+                                <Text style={styles.btnText}>
+                                Select time
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
             </View>
-            <View>
+            <View style={{width: '100%'}}>
                 <Text style={styles.label}>Confirmation time limit</Text>
                 {Platform.OS != 'android' ? 
-                    (<DateTimePicker 
-                        value={timeOfArrival ?? new Date()} 
+                    (
+                    <DateTimePicker 
+                        value={confirmationTimeLimit ?? new Date()} 
                         mode="datetime" 
                         onChange={(event, date) => setConfirmationTimeLimit(date)}
                         />) :
                     (
                         <View>
-                            <Button 
-                            onPress={() => showDatePicker('time', timeOfArrival ?? new Date(), (event, date) => setTimeOfArrival(date))} 
-                            title="Open timepicker" />
-                            <Button 
-                            onPress={() => showDatePicker('datetime', timeOfArrival ?? new Date(), (event, date) => setConfirmationTimeLimit(date))} 
-                            title="Open datetime picker" />
+                            <TouchableOpacity 
+                            style={styles.btn}
+                            onPress={() => showDatePicker('date', confirmationTimeLimit ?? new Date(), (event, date) => setConfirmationTimeLimit(date))} >
+                                <Text style={styles.btnText}>
+                                Select date
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity 
+                            style={styles.btn}
+                            onPress={() => showDatePicker('time', confirmationTimeLimit ?? new Date(), (event, date) => setTimeOfArrival(date))} >
+                                <Text style={styles.btnText}>
+                                Select time
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     )}
             </View>
@@ -70,6 +97,7 @@ export function NewDriverRide() {
                 <TextInput
                     keyboardType='numeric'
                     style={styles.input}
+                    onChange={e => setSeats(e.nativeEvent.text as unknown as number)}
                 />
             </View>
             <View>
@@ -91,24 +119,25 @@ export function NewDriverRide() {
 
 const styles = StyleSheet.create({
     input: {
-        height: 60,
+        height: 55,
         padding: 15,
-        fontSize: 16,
-        borderColor: '#0076BE',
+        fontSize: 18,
+        borderColor: '#3090C8',
         borderWidth: 2,
         borderRadius: 100,
-        marginVertical: 20,
+        marginVertical: 5,
         width: 300,
         color: '#404040'
     },
     btn: {
-        backgroundColor: '#0076BE',
-        padding: 12,
-        margin: 3,
+        backgroundColor: '#3090C8',
+        padding: 9,
+        margin: 5,
+        borderRadius: 100
     },
     btnText: {
-        color: 'darkslateblue',
-        fontSize: 20,
+        color: 'white',
+        fontSize: 16,
         textAlign: 'center',
     },
     container: {
@@ -118,7 +147,8 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 18,
+        marginTop: 10,
         fontWeight: 'bold',
-        color: '#0076BE'
+        color: '#3090C8'
     }
 })
